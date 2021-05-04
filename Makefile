@@ -5,12 +5,12 @@ EFI_ARCH	:= AARCH64
 EFI_TOOLCHAIN	:= GCC5
 EFI_TIMEOUT	:= 3
 EFI_FLAGS	:= --pcd=PcdPlatformBootTimeOut=$(EFI_TIMEOUT)
-EFI_DSC		:= edk2-platforms/Platform/RaspberryPi/RPi3/RPi3.dsc
-EFI_FD		:= Build/RPi3/$(EFI_BUILD)_$(EFI_TOOLCHAIN)/FV/RPI_EFI.fd
+EFI_DSC		:= edk2-platforms/Platform/RaspberryPi/RPi4/RPi4.dsc
+EFI_FD		:= Build/RPi4/$(EFI_BUILD)_$(EFI_TOOLCHAIN)/FV/RPI_EFI.fd
 
 IPXE_CROSS	:= aarch64-linux-gnu-
 IPXE_SRC	:= ipxe/src
-IPXE_TGT	:= bin-arm64-efi/rpi.efi
+IPXE_TGT	:= bin-arm64-efi/snp.efi #bin-arm64-efi/rpi.efi
 IPXE_EFI	:= $(IPXE_SRC)/$(IPXE_TGT)
 
 SDCARD_MB	:= 32
@@ -21,7 +21,7 @@ SHELL		:= /bin/bash
 all : sdcard sdcard.img sdcard.zip
 
 submodules :
-	git submodule update --init --recursive
+#	git submodule update --init --recursive
 
 firmware :
 	if [ ! -e firmware ] ; then \
