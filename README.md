@@ -1,8 +1,8 @@
-piPXE - iPXE for the Raspberry Pi
-=================================
+piPXE - iPXE for the Raspberry Pi 4
+===================================
 
-[![Build](https://img.shields.io/github/workflow/status/ipxe/pipxe/Build)](https://github.com/ipxe/pipxe/actions?query=workflow%3ABuild+branch%3Amaster)
-[![Release](https://img.shields.io/github/v/release/ipxe/pipxe)](https://github.com/ipxe/pipxe/releases/latest)
+[![Build](https://github.com/sschaeffner/pipxe4/actions/workflows/build.yml/badge.svg)](https://github.com/sschaeffner/pipxe4/actions/workflows/build.yml)
+[![Release](https://img.shields.io/github/v/release/sschaeffner/pipxe4)](https://github.com/sschaeffner/pipxe4/releases/latest)
 
 piPXE is a build of the [iPXE] network boot firmware for the
 [Raspberry Pi].
@@ -50,7 +50,7 @@ How it works
 The SD card image contains:
 
 * Broadcom [VC4 boot firmware]: `bootcode.bin` and related files
-* [TianoCore EDK2] UEFI firmware built for the [RPi3] platform: `RPI_EFI.fd`
+* [TianoCore EDK2] UEFI firmware built for the [RPi4] platform: `RPI_EFI.fd`
 * [iPXE] built for the `arm64-efi` platform: `/efi/boot/bootaa64.efi`
 
 The Raspberry Pi has a somewhat convoluted boot process in which the
@@ -62,6 +62,16 @@ code.  The flow of execution is approximately:
 3. The GPU allows the CPU to start executing `RPI_EFI.fd`.
 4. The CPU executes `RPI_EFI.fd` and loads `bootaa64.efi` from the SD card.
 5. The CPU executes `bootaa64.efi` (i.e. iPXE) to boot from the network.
+
+Build Settings
+--------------
+
+The build has some non-default options for edk2 configured. See `EFI_FLAGS` in [Makefile].
+
+* `--pcd=PcdPlatformBootTimeOut=$(EFI_TIMEOUT)` sets the timeout for entering the menu
+* `--pcd=gRaspberryPiTokenSpaceGuid.PcdRamMoreThan3GB=1` enables more than 3GB RAM
+* `--pcd=gRaspberryPiTokenSpaceGuid.PcdRamLimitTo3GB=0` disables limit to 3GB RAM
+* `--pcd=gRaspberryPiTokenSpaceGuid.PcdSystemTableMode=1` enables ACPI+DT System Table
 
 Licence
 -------
@@ -75,8 +85,9 @@ subproject licensing terms for more details:
 
 [iPXE]: https://ipxe.org
 [Raspberry Pi]: https://www.raspberrypi.org
-[sdcard.img]: https://github.com/ipxe/pipxe/releases/latest/download/sdcard.img
+[sdcard.img]: https://github.com/sschaeffner/pipxe4/releases/latest/download/sdcard.img
+[Makefile]: https://github.com/sschaeffner/pipxe4/blob/master/Makefile#L7
 [Etcher]: https://www.balena.io/etcher
 [VC4 boot firmware]: https://github.com/raspberrypi/firmware/tree/master/boot
 [TianoCore EDK2]: https://github.com/tianocore/edk2
-[RPi3]: https://github.com/tianocore/edk2-platforms/tree/master/Platform/RaspberryPi/RPi3
+[RPi4]: https://github.com/tianocore/edk2-platforms/tree/master/Platform/RaspberryPi/RPi4
